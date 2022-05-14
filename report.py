@@ -5,6 +5,8 @@ import datetime
 from pytz import timezone
 from urllib.parse import urlencode
 
+URL_INDEX = "http://ehallapp.nju.edu.cn/xgfw/sys/mrjkdkappnju/index.html"
+URL_UNREAD_LIST = 'http://ehallapp.nju.edu.cn/psfw/sys/tzggapp/mobile/getUnReadCount.do'
 URL_JKDK_LIST = 'http://ehallapp.nju.edu.cn/xgfw/sys/yqfxmrjkdkappnju/apply/getApplyInfoList.do'
 URL_JKDK_APPLY = 'http://ehallapp.nju.edu.cn/xgfw/sys/yqfxmrjkdkappnju/apply/saveApplyInfos.do'
 URL_JDKD_INDEX = 'http://ehallapp.nju.edu.cn/xgfw/sys/mrjkdkappnju/index.html'
@@ -24,6 +26,8 @@ def apply(curr_location, logger, auth: NjuUiaAuth, covidTestMethod='YESTERDAY', 
     :param `covidTestMethod`: 最近核酸时间的方案
     :param `force`: 是否在今日已经打卡的前提下强制打卡
     """
+    r1 = auth.session.get(URL_UNREAD_LIST)
+    r1 = auth.session.get(URL_INDEX)
     for _ in range(10):
         logger.info('尝试获取打卡列表信息...')
         r = auth.session.get(URL_JKDK_LIST)
